@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ClimateCaster-Weather</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./develop/style.css" />
   </head>
 
   <body>
@@ -12,12 +12,18 @@
       <h1>ClimateCaster</h1>
       <form id="search-form">
         <input type="text" id="city-input" placeholder="Enter a city name" />
-        <button type="submit">Search</button>
+        <button id="search-btn" type="submit">Search</button>
       </form>
 
       <div id="current weather">
         <!---display current weather-->
+        <div class="weather-box">
+          <h2 id="temperature"></h2>
+          <p id="condition"></p>
+          <p id="location"></p>
+        </div>
       </div>
+
       <div id="forecast-info">
         <!----display 5 day forecast -->
       </div>
@@ -25,6 +31,6 @@
         <!-- Display search history here -->
       </div>
     </div>
-    <script src="script.js"></script>
+    <script src="./develop/script.js"></script>
   </body>
 </html>
