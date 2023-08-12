@@ -183,6 +183,10 @@ function listBuilder(searchesArray) {
   searchesArray.forEach((city) => {
     const listItem = document.createElement("li");
     listItem.textContent = city;
+    listItem.addEventListener("click", () => {
+      cityInput.value = city; // Fill the input with the clicked city
+      searchForm.dispatchEvent(new Event("submit")); // Trigger form submission
+    });
     searches.appendChild(listItem);
   });
 }
@@ -190,8 +194,10 @@ function listBuilder(searchesArray) {
 listBuilder(citiesStorage);
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  citiesStorage.push(cityInput.value);
-  localStorage.setItem("searches", JSON.stringify(citiesStorage));
-  listBuilder(citiesStorage);
-  cityInput.value = "";
+  if (cityInput.value.trim() !== "") {
+    citiesStorage.push(cityInput.value);
+    localStorage.setItem("searches", JSON.stringify(citiesStorage));
+    listBuilder(citiesStorage);
+    cityInput.value = "";
+  }
 });
