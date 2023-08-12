@@ -94,3 +94,9 @@ form {
     margin-right: 0;
   }
 }
+
+#search-history h2,
+.right h3,
+.right h4 {
+  display: none;
+}

@@ -72,6 +72,10 @@ searchBtn.addEventListener("click", (event) => {
 
   // Fetch current weather data
   getWeatherData(location).then((weatherData) => {
+    document.querySelector("#search-history h2").style.display = "block";
+    document.querySelector(".right h3").style.display = "block";
+    document.querySelector(".right h4").style.display = "block";
+
     currentWeather(weatherData);
     getFiveDayForecast(location).then((forecastData) => {
       displayFiveDayForecast(forecastData);
