@@ -15,37 +15,41 @@
 
   <body>
     <div class="container">
-      <h1>ClimateCaster</h1>
-      <form id="search-form">
-        <input type="text" id="city-input" placeholder="Enter a city name" />
-        <!---- search button! -->
-        <button id="search-btn" type="submit">Search</button>
-      </form>
-      <div id="search-history">
-        <!--Search history goes here-->
-      </div>
-      <div id="current weather">
-        <!---display current weather-->
-        <div class="weather-box">
-          <p id="current-date"></p>
-          <p id="condition">
-            <img id="condition-icon" alt="" src="" />
-          </p>
-          <p id="temperature"></p>
-          <p id="location"></p>
-          <p id="humidity"></p>
-          <p id="speed"></p>
+      <div class="left">
+        <h1>ClimateCaster</h1>
+        <form id="search-form">
+          <input type="text" id="city-input" placeholder="Enter a city name" />
+          <!---- search button! -->
+          <button id="search-btn" type="submit">Search</button>
+        </form>
+          <section id="search-history">
+            <h2>Search history</h2>
+            <ul id="search-history"></ul>
+            <!-- Display search history here -->
+          </section>
+          <!--Search history goes here-->
+        </div>
+        <div class="right">
+          <div id="current weather" class="current-weather"></div>
+          <h3>Today's Forecast</h3>
+          <!---display current weather-->
+          <div class="weather-box">
+            <p id="current-date"></p>
+            <p id="condition">
+              <img id="condition-icon" alt="" src="" />
+            </p>
+            <p id="temperature"></p>
+            <p id="location"></p>
+            <p id="humidity"></p>
+            <p id="speed"></p>
+          </div>
+          
+            <h4>Next 5-Days Forecast</h4>
+            <!----display 5 day forecast -->
+            <div id="forecast-info"></div>
         </div>
       </div>
-
-      <section id="forecast-info">
-        <!----display 5 day forecast -->
-      </section>
-      <section id="search-history">
-        <h2>Search history</h2>
-        <ul id="search-history"></ul>
-        <!-- Display search history here -->
-      </section>
+     
     </div>
     <script src="./develop/script.js"></script>
   </body>

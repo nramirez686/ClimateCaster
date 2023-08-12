@@ -53,23 +53,30 @@ function displaySearchHistory(searchHistory) {
   });
 }
 
+function saveSearchToLocalStorage(location) {
+  let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+  // Check if the location is already in the search history
+  if (!searchHistory.includes(location)) {
+    // Add the location to the search history
+    searchHistory.push(location);
+
+    // Save the updated search history to local storage
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  }
+}
+
 searchBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const location = searchBar.value;
 
-  saveSearchToLocalStorage(location);
-
   // Fetch current weather data
   getWeatherData(location).then((weatherData) => {
     currentWeather(weatherData);
-    // Fetch 5-day forecast data
     getFiveDayForecast(location).then((forecastData) => {
-      displayFiveDayForecast(forecastData); // Display 5-day forecast
+      displayFiveDayForecast(forecastData);
     });
   });
-
-  const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
-  displaySearchHistory(searchHistory);
 });
 
 // Function to fetch the 5-day forecast data
@@ -157,3 +164,4 @@ function displayFiveDayForecast(forecastData) {
     forecastInfo.appendChild(forecastItem);
   });
 }
+function displaySearchHistory() {}
