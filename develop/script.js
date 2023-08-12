@@ -1,4 +1,4 @@
-//this function uses fetch and find the data for temperature, condition and location
+//Function uses fetch and find the data for the current weather
 function getWeatherData(location) {
   const apiKey = "97cfd0909846f759120be372471c2a97";
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}`;
@@ -6,6 +6,7 @@ function getWeatherData(location) {
     .then((response) => response.json())
     .then((data) => {
       const weatherData = {
+        date: new Date(),
         temperature: data.main.temp,
         condition: data.weather[0].icon,
         location: data.name,
@@ -29,43 +30,130 @@ function currentWeather(weatherData) {
   const humidity = document.querySelector("#humidity");
   const speed = document.querySelector("#speed");
 
-  const now = new Date(); // Get the current date and time
-  const options = {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-  };
-  currentDateElem.textContent = now.toLocaleDateString(undefined, options);
-
+  currentDateElem.textContent = weatherData.date.toLocaleDateString();
   conditionIcon.src = `https://openweathermap.org/img/w/${weatherData.condition}.png`;
   temperature.textContent = `${temperatureFahrenheit.toFixed(2)}°F`;
   location.textContent = weatherData.location;
   humidity.textContent = `Humidity: ${weatherData.humidity}%`;
   speed.textContent = `Wind Speed: ${weatherData.speed} m/s`;
-
-  conditionIcon.src = `https://openweathermap.org/img/w/${weatherData.condition}.png`;
 }
 
 //this function adds and event listener when the search button is clicked to display the current weather function
 const searchBtn = document.querySelector("#search-btn");
 const searchBar = document.querySelector("#city-input");
 
-searchBtn.addEventListener("click", () => {
+function displaySearchHistory(searchHistory) {
+  const searchHistoryList = document.getElementById("search-history-list");
+  searchHistoryList.innerHTML = "";
+
+  searchHistory.forEach((city) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = city;
+    searchHistoryList.appendChild(listItem);
+  });
+}
+
+searchBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const location = searchBar.value;
-  getWeatherData(location)
-    .then((weatherData) => {
-      currentWeather(weatherData);
-    })
-    .catch((error) => {
-      console.log(error);
+
+  saveSearchToLocalStorage(location);
+
+  // Fetch current weather data
+  getWeatherData(location).then((weatherData) => {
+    currentWeather(weatherData);
+    // Fetch 5-day forecast data
+    getFiveDayForecast(location).then((forecastData) => {
+      displayFiveDayForecast(forecastData); // Display 5-day forecast
     });
+  });
+
+  const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+  displaySearchHistory(searchHistory);
 });
 
-//function to fetch fot the 5-day forecast
-function getForecastData(forecast) {
+// Function to fetch the 5-day forecast data
+function getFiveDayForecast(location) {
   const apiKey = "97cfd0909846f759120be372471c2a97";
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&appid=${apiKey}`;
+  return fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      //object to store data
+      const dailyForecastData = {};
+
+      // Loop through the list and fetches specific data
+      data.list.forEach((item) => {
+        const date = new Date(item.dt_txt).toLocaleDateString();
+        const maxTemp = item.main.temp_max;
+        const condition = item.weather[0].icon;
+        const humidity = item.main.humidity;
+        const windSpeed = item.wind.speed;
+
+        // If the date is not yet in the dailyForecastData, add it with the data
+        if (!dailyForecastData[date]) {
+          dailyForecastData[date] = {
+            date: date,
+            maxTemperature: maxTemp,
+            condition: condition,
+            humidity: humidity,
+            windSpeed: windSpeed,
+            location: data.city.name,
+          };
+        } else {
+          // If the date is already in the dailyForecastData, update data if needed
+          if (maxTemp > dailyForecastData[date].maxTemperature) {
+            dailyForecastData[date].maxTemperature = maxTemp;
+          }
+        }
+      });
+
+      // Convert the dailyForecastData object to an array of forecast items
+      const forecastData = Object.values(dailyForecastData);
+
+      console.log(data);
+      return forecastData;
+    });
 }
-//function to display the forecast- probably will need to loop through data and append to section after
-function displayForecast() {}
+
+// ... Rest of your code remains the same
+
+// Function to display the 5-day forecast on the webpage
+function displayFiveDayForecast(forecastData) {
+  const forecastInfo = document.querySelector("#forecast-info");
+  forecastInfo.innerHTML = ""; // Clear any existing forecast data
+
+  forecastData.forEach((item) => {
+    const date = new Date(item.date).toLocaleDateString();
+    const forecastItem = document.createElement("div");
+    forecastItem.classList.add("forecast-item");
+
+    const dateElem = document.createElement("p");
+    dateElem.textContent = date;
+
+    const conditionIcon = document.createElement("img");
+    conditionIcon.src = `https://openweathermap.org/img/w/${item.condition}.png`;
+
+    const temperatureElem = document.createElement("p");
+    const temperatureFahrenheit = (item.maxTemperature * 9) / 5 + 32;
+    temperatureElem.textContent = `${temperatureFahrenheit.toFixed(2)}°F`;
+
+    const locationElem = document.createElement("p");
+    locationElem.textContent = `${item.location}`;
+
+    const humidityElem = document.createElement("p");
+    humidityElem.textContent = `Humidity: ${item.humidity}%`;
+
+    const windSpeedElem = document.createElement("p");
+    windSpeedElem.textContent = `Wind Speed: ${item.windSpeed} m/s`;
+
+    forecastItem.appendChild(dateElem);
+    forecastItem.appendChild(conditionIcon);
+    forecastItem.appendChild(temperatureElem);
+    forecastItem.appendChild(locationElem);
+    forecastItem.appendChild(humidityElem);
+    forecastItem.appendChild(windSpeedElem);
+
+    forecastInfo.appendChild(forecastItem);
+  });
+}
