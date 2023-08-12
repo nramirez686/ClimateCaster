@@ -18,14 +18,18 @@
       <h1>ClimateCaster</h1>
       <form id="search-form">
         <input type="text" id="city-input" placeholder="Enter a city name" />
+        <!---- search button! -->
         <button id="search-btn" type="submit">Search</button>
       </form>
+      <div id="search-history">
+        <!--Search history goes here-->
+      </div>
       <div id="current weather">
         <!---display current weather-->
         <div class="weather-box">
           <p id="current-date"></p>
           <p id="condition">
-            <img id="condition-icon" alt="weather icon" src="" />
+            <img id="condition-icon" alt="" src="" />
           </p>
           <p id="temperature"></p>
           <p id="location"></p>
@@ -38,6 +42,8 @@
         <!----display 5 day forecast -->
       </section>
       <section id="search-history">
+        <h2>Search history</h2>
+        <ul id="search-history"></ul>
         <!-- Display search history here -->
       </section>
     </div>
