@@ -22,34 +22,33 @@
           <!---- search button! -->
           <button id="search-btn" type="submit">Search</button>
         </form>
-          <section id="search-history">
-            <h2>Search history</h2>
-            <ul id="search-history"></ul>
-            <!-- Display search history here -->
-          </section>
-          <!--Search history goes here-->
-        </div>
-        <div class="right">
-          <div id="current weather" class="current-weather"></div>
-          <h3>Today's Forecast</h3>
-          <!---display current weather-->
-          <div class="weather-box">
-            <p id="current-date"></p>
-            <p id="condition">
-              <img id="condition-icon" alt="" src="" />
-            </p>
-            <p id="temperature"></p>
-            <p id="location"></p>
-            <p id="humidity"></p>
-            <p id="speed"></p>
-          </div>
-          
-            <h4>Next 5-Days Forecast</h4>
-            <!----display 5 day forecast -->
-            <div id="forecast-info"></div>
-        </div>
+        <section id="search-history">
+          <h2>Search history</h2>
+          <ul id="searches"></ul>
+          <!-- Display search history here -->
+        </section>
+        <!--Search history goes here-->
       </div>
-     
+      <div class="right">
+        <div id="current weather" class="current-weather"></div>
+        <div class="current-weather-item"></div>
+        <h3>Today's Forecast</h3>
+        <!---display current weather-->
+        <div class="weather-box">
+          <p id="current-date"></p>
+          <p id="condition">
+            <img id="condition-icon" alt="" src="" />
+          </p>
+          <p id="temperature"></p>
+          <p id="location"></p>
+          <p id="humidity"></p>
+          <p id="speed"></p>
+        </div>
+        <h4>Next 5-Days Forecast</h4>
+        <!----display 5 day forecast -->
+        <div id="forecast-info" class="forecast"></div>
+        <div class="forecast-item"></div>
+      </div>
     </div>
     <script src="./develop/script.js"></script>
   </body>

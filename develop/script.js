@@ -164,4 +164,30 @@ function displayFiveDayForecast(forecastData) {
     forecastInfo.appendChild(forecastItem);
   });
 }
-function displaySearchHistory() {}
+
+const searchForm = document.getElementById("search-form");
+const cityInput = document.getElementById("city-input");
+const submitButton = document.getElementById("submit");
+const searches = document.getElementById("searches");
+
+let citiesStorage = localStorage.getItem("searches")
+  ? JSON.parse(localStorage.getItem("searches"))
+  : [];
+
+function listBuilder(searchesArray) {
+  searches.innerHTML = "";
+  searchesArray.forEach((city) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = city;
+    searches.appendChild(listItem);
+  });
+}
+
+listBuilder(citiesStorage);
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  citiesStorage.push(cityInput.value);
+  localStorage.setItem("searches", JSON.stringify(citiesStorage));
+  listBuilder(citiesStorage);
+  cityInput.value = "";
+});

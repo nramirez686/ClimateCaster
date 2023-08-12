@@ -36,8 +36,8 @@ form {
 
 #search-btn {
   padding: 5px 10px;
-  background-color: green;
-  color: white;
+  background-color: aliceblue;
+  color: black;
   border: none;
   cursor: pointer;
 }
@@ -55,21 +55,27 @@ form {
 .current-weather {
   padding: 20px;
   margin-bottom: 20px;
+  background-color: ;
+}
+
+.current-weather-item {
+  background-color: aliceblue;
 }
 
 .forecast {
   display: flex;
   flex-direction: row;
-  flex-wrap: nonwrap;
+  flex-wrap: wrap;
   margin-top: 20px;
+  background-color: aliceblue;
 }
 
 .forecast-item {
   flex-direction: row;
-  justify-content: space-between; /* Prevent items from growing or shrinking */
-  width: 150px; /* Set a fixed width for each forecast item */
+  justify-content: space-between;
+  width: 150px;
   padding: 10px;
-  background-color: #9bac82;
+  border-radius: 10px;
   margin-right: 10px;
   margin-bottom: 20px;
 }
