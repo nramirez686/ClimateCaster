@@ -35,11 +35,22 @@ form {
 }
 
 #search-btn {
+  display: block;
   padding: 5px 10px;
   background-color: #ffb6c1;
   color: black;
   border: none;
   cursor: pointer;
+}
+button {
+  display: block;
+  padding: 5px 10px;
+  background-color: #ffb6c1;
+  color: black;
+  border: none;
+  cursor: pointer;
+  width: 150px;
+  margin-bottom: 5px;
 }
 
 #search-history-list {

@@ -174,28 +174,43 @@ const cityInput = document.getElementById("city-input");
 const submitButton = document.getElementById("submit");
 const searches = document.getElementById("searches");
 
-let citiesStorage = localStorage.getItem("searches")
-  ? JSON.parse(localStorage.getItem("searches"))
-  : [];
+let citiesStorage = JSON.parse(localStorage.getItem("searches")) || [];
 
 function listBuilder(searchesArray) {
   searches.innerHTML = "";
   searchesArray.forEach((city) => {
-    const listItem = document.createElement("li");
+    const listItem = document.createElement("button");
     listItem.textContent = city;
     listItem.addEventListener("click", () => {
       cityInput.value = city; // Fill the input with the clicked city
       searchForm.dispatchEvent(new Event("submit")); // Trigger form submission
+      //
+      getWeatherData(city).then((weatherData) => {
+        document.querySelector("#search-history h2").style.display = "block";
+        document.querySelector(".right h3").style.display = "block";
+        document.querySelector(".right h4").style.display = "block";
+
+        currentWeather(weatherData);
+      });
+
+      // Fetch 5-day forecast data for the clicked city
+      getFiveDayForecast(city).then((forecastData) => {
+        displayFiveDayForecast(forecastData);
+      });
     });
     searches.appendChild(listItem);
   });
 }
 
 listBuilder(citiesStorage);
-searchForm.addEventListener("submit", (e) => {
+searchBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  if (cityInput.value.trim() !== "") {
+  if (
+    cityInput.value.trim() !== "" &&
+    citiesStorage.indexOf(cityInput.value) === -1
+  ) {
     citiesStorage.push(cityInput.value);
+    console.log(cityInput, citiesStorage);
     localStorage.setItem("searches", JSON.stringify(citiesStorage));
     listBuilder(citiesStorage);
     cityInput.value = "";
