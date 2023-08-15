@@ -42,6 +42,7 @@ form {
   border: none;
   cursor: pointer;
 }
+
 button {
   display: block;
   padding: 5px 10px;
@@ -49,7 +50,7 @@ button {
   color: black;
   border: none;
   cursor: pointer;
-  width: 150px;
+  width: 130px;
   margin-bottom: 5px;
 }
 
