@@ -55,12 +55,10 @@ function displaySearchHistory(searchHistory) {
 
 function saveSearchToLocalStorage(location) {
   let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
-
   // Check if the location is already in the search history
   if (!searchHistory.includes(location)) {
     // Add the location to the search history
     searchHistory.push(location);
-
     // Save the updated search history to local storage
     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   }
@@ -70,7 +68,7 @@ searchBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const location = searchBar.value;
 
-  // Fetch current weather data
+  // Fetch current weather data & forecast
   getWeatherData(location).then((weatherData) => {
     document.querySelector("#search-history h2").style.display = "block";
     document.querySelector(".right h3").style.display = "block";
@@ -92,8 +90,7 @@ function getFiveDayForecast(location) {
     .then((data) => {
       //object to store data
       const dailyForecastData = {};
-
-      // Loop through the list and fetches specific data
+      // Loop through the list of items and fetches specific data
       data.list.forEach((item) => {
         const date = new Date(item.dt_txt).toLocaleDateString();
         const maxTemp = item.main.temp_max;
@@ -101,7 +98,7 @@ function getFiveDayForecast(location) {
         const humidity = item.main.humidity;
         const windSpeed = item.wind.speed;
 
-        // If the date is not yet in the dailyForecastData, add it with the data
+        // If the date is not yet in the dailyForecastData then add it with the data
         if (!dailyForecastData[date]) {
           dailyForecastData[date] = {
             date: date,
@@ -112,14 +109,14 @@ function getFiveDayForecast(location) {
             location: data.city.name,
           };
         } else {
-          // If the date is already in the dailyForecastData, update data if needed
+          // If the date is already in the dailyForecastData then update data if needed
           if (maxTemp > dailyForecastData[date].maxTemperature) {
             dailyForecastData[date].maxTemperature = maxTemp;
           }
         }
       });
 
-      // Convert the dailyForecastData object to an array of forecast items
+      // Convert the dailyForecastData object to an array of forecasts
       const forecastData = Object.values(dailyForecastData);
 
       console.log(data);
@@ -127,12 +124,10 @@ function getFiveDayForecast(location) {
     });
 }
 
-// ... Rest of your code remains the same
-
 // Function to display the 5-day forecast on the webpage
 function displayFiveDayForecast(forecastData) {
   const forecastInfo = document.querySelector("#forecast-info");
-  forecastInfo.innerHTML = ""; // Clear any existing forecast data
+  forecastInfo.innerHTML = "";
 
   forecastData.forEach((item) => {
     const date = new Date(item.date).toLocaleDateString();
@@ -175,16 +170,16 @@ const submitButton = document.getElementById("submit");
 const searches = document.getElementById("searches");
 
 let citiesStorage = JSON.parse(localStorage.getItem("searches")) || [];
-
+//function that add the searched cities to local storage, stores them as buttons then calls weatherData and forecast data for each city to retrieve the weather again
 function listBuilder(searchesArray) {
   searches.innerHTML = "";
   searchesArray.forEach((city) => {
     const listItem = document.createElement("button");
     listItem.textContent = city;
     listItem.addEventListener("click", () => {
-      cityInput.value = city; // Fill the input with the clicked city
-      searchForm.dispatchEvent(new Event("submit")); // Trigger form submission
-      //
+      cityInput.value = city;
+      searchForm.dispatchEvent(new Event("submit"));
+      // call functions that display current and future forecast when city stored in button is clicked
       getWeatherData(city).then((weatherData) => {
         document.querySelector("#search-history h2").style.display = "block";
         document.querySelector(".right h3").style.display = "block";
@@ -192,7 +187,6 @@ function listBuilder(searchesArray) {
 
         currentWeather(weatherData);
       });
-
       // Fetch 5-day forecast data for the clicked city
       getFiveDayForecast(city).then((forecastData) => {
         displayFiveDayForecast(forecastData);
@@ -201,7 +195,7 @@ function listBuilder(searchesArray) {
     searches.appendChild(listItem);
   });
 }
-
+// added the === -1 in order for cities not repeat a button for same city searches
 listBuilder(citiesStorage);
 searchBtn.addEventListener("click", (e) => {
   e.preventDefault();
